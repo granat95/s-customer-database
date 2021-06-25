@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getCustomer" doc:id="6e3fea17-4298-4c9b-8957-bb99892ec50b" >
+		<choice doc:name="Choice" doc:id="4c140f49-18b7-42f5-acf3-6e89bd8a4412" >
+			<when expression="#[attributes.queryParams.company != null and not isBlank(attributes.queryParams.company)]" >
+				<logger level="INFO" doc:name="Logger" doc:id="773441e6-d51f-4fcb-b74d-2d3ce11ba3e1" message="get method - company query" />
+				<db:select doc:name="company query" doc:id="61ad0b01-3be7-4c3f-a3df-89e47028892b" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
+FROM customers
+WHERE customers.company=:companyQ]]></db:sql>
+					<db:input-parameters ><![CDATA[#['companyQ':attributes.queryParams.company]]]></db:input-parameters>
+				</db:select>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="f411af68-cef7-41b9-963c-05be295c0469" message="Get method" />
+				<db:select doc:name="all customers" doc:id="0f5ffa8b-bd62-456e-a4f7-cbc9d6fa81fe" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
+FROM customers]]></db:sql>
+				</db:select>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="505665bc-1a27-45f2-9afa-fdfd53fb59ab" message="Content validation" />
+		<logger level="INFO" doc:name="Logger" doc:id="4b0a0660-c01a-444a-ad35-ee0312b4330d" message="Mapowanie danych wyjściowych" />
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="43775875-9283-4fac-a0b8-5dfa8efa377e" />
+		<ee:transform doc:name="Transform Message" doc:id="4a53703e-dd3c-411f-948e-32168f7f8352" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="postCustomer" doc:id="a72c790e-f3ba-43a0-ad4c-c76784f4fb71">
+		<logger level="INFO" doc:name="Logger" doc:id="9ee9b485-649e-4dda-a096-f63b53316c13" message="Post method" />
+		<db:insert doc:name="add customer" doc:id="5e3190bc-a81c-4c1e-a02e-7160c80db647" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into customers (id, name, surname, company)
+values(:clientId, :name, :surname, :company)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+        clientId: payload.clientId,
+        name: payload.name,
+        surname: payload.surname,
+        company: payload.company
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="5ed7c707-20f9-4a6f-9b10-51bb59efca28" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Dodano dane"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
