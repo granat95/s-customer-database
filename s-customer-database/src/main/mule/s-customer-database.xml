@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
     <http:listener-config name="s-customer-database-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
     <apikit:config name="s-customer-database-config" api="s-customer-database.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="s-customer-database-main">
-        <http:listener config-ref="s-customer-database-httpListenerConfig" path="/api/*" allowedMethods="GET, POST">
+        <http:listener config-ref="s-customer-database-httpListenerConfig" path="/api/*" allowedMethods="GET, POST, DELETE">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
@@ -97,13 +97,13 @@ output application/json
         </error-handler>
     </flow>
     <flow name="s-customer-database-console">
-        <http:listener config-ref="s-customer-database-httpListenerConfig" path="/console/*">
+        <http:listener config-ref="s-customer-database-httpListenerConfig" path="/console/*" allowedMethods="GET, POST, DELETE">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="s-customer-database-config" />
@@ -124,9 +124,12 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\customers:s-customer-database-config">
-		<flow-ref doc:name="getCustomer" doc:id="18c69ccf-d051-4622-bd27-fe6729a30663" name="getCustomer"/>
+        <flow-ref doc:name="getCustomer" doc:id="18c69ccf-d051-4622-bd27-fe6729a30663" name="getCustomer" />
     </flow>
     <flow name="post:\customers:application\json:s-customer-database-config">
-		<flow-ref doc:name="postCustomer" doc:id="ea3fa5ba-a84f-4031-abc6-b07750016ec8" name="postCustomer"/>
+        <flow-ref doc:name="postCustomer" doc:id="ea3fa5ba-a84f-4031-abc6-b07750016ec8" name="postCustomer" />
+    </flow>
+    <flow name="delete:\customers\(ID):s-customer-database-config">
+        <flow-ref doc:name="Flow Reference" doc:id="2ae8a14c-0748-41d9-a228-d8586f106e27" name="deleteCustomer"/>
     </flow>
 </mule>
