@@ -28,7 +28,6 @@ FROM customers]]></db:sql>
 		<logger level="INFO" doc:name="Logger" doc:id="505665bc-1a27-45f2-9afa-fdfd53fb59ab" message="Content validation" />
 		<logger level="INFO" doc:name="Logger" doc:id="4b0a0660-c01a-444a-ad35-ee0312b4330d" message="Mapowanie danych wyjściowych" />
 		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="43775875-9283-4fac-a0b8-5dfa8efa377e" />
-		<logger level="INFO" doc:name="Data to Json" doc:id="c1323808-2bc0-49d8-a2d8-1d8b446ff6a7" message="Data to Json"/>
 		<ee:transform doc:name="Transform Message" doc:id="4a53703e-dd3c-411f-948e-32168f7f8352" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
