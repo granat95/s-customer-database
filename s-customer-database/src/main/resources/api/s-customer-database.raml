@@ -33,3 +33,11 @@ securedBy:
           body:
             application/json:
               example: !include /Examples/examplePost.json
+    /{ID}:
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example:
+                  message: Klient usunięty z bazy

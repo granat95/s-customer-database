@@ -60,4 +60,22 @@ output application/json
 			</ee:message>
 		</ee:transform>
 	</flow>
+	<flow name="deleteCustomer" doc:id="b5ed0fa2-73a0-4f5a-af81-201c5fe47b24" >
+		<logger level="INFO" doc:name="Logger" doc:id="ea6158fd-5d72-4468-9de9-029dc8cc4e39" />
+		<db:delete doc:name="Delete Customer" doc:id="e8a78bc1-fcc6-4fa8-b779-6b59c1efd944" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM customers
+where customers.id=:ID]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'ID':attributes.uriParams.'ID'}]]]></db:input-parameters>
+		</db:delete>
+		<ee:transform doc:name="Transform Message" doc:id="b004a147-8975-43e5-bf53-c3282ad250f4" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Klient usunięty z bazy"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 </mule>
