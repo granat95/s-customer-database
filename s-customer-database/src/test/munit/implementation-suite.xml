@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-suite.xml" />
+	<munit:test name="getCustomer-test-all" doc:id="42d17da6-f214-409e-99f8-584bbe5b1b80" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="d4f18572-83f2-4d2a-928e-82370f26a6e8" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://getCustomertestall\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://getCustomertestall\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getCustomertestall\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getCustomer" doc:id="b5bec216-f274-4a95-a7aa-c760fbc04946" name="getCustomer"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="081b9fbf-3def-4a28-90c0-6c67c0fe4317" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getCustomertestall::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="152fc8d3-e436-4282-a40e-03f905fe7d53" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f411af68-cef7-41b9-963c-05be295c0469" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="d7cb2829-8f70-44cf-a441-344a101cbb13" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4a53703e-dd3c-411f-948e-32168f7f8352" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify all customers" doc:id="171de5c9-9c51-4627-9a42-f6c946679e0d" processor="db:select" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0f5ffa8b-bd62-456e-a4f7-cbc9d6fa81fe" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is not empty collection" doc:id="a0a4d919-73d6-4aa3-88fa-c69dfd4da52d" processor="validation:is-not-empty-collection" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="43775875-9283-4fac-a0b8-5dfa8efa377e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="5c41087b-7af9-4051-85f8-0f21417d7f01" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4b0a0660-c01a-444a-ad35-ee0312b4330d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="21199555-adb8-4fd5-bffa-75b529f8b78e" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="505665bc-1a27-45f2-9afa-fdfd53fb59ab" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getCustomer-test-query" doc:id="ab2a0ad5-d7a8-40c5-ac41-0ca513762a1c" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="6d1bdf85-5391-4ad6-beba-649d307a4182" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://getCustomertestquery\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://getCustomertestquery\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getCustomertestquery\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getCustomer" doc:id="8bf1d556-ae2f-49cf-a70f-119b6250fc2d" name="getCustomer"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="7ff993f6-876e-4966-b69f-84cc90f12733" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getCustomertestquery::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="d978349f-89fe-4d19-a77d-4db6aa72e4e2" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4a53703e-dd3c-411f-948e-32168f7f8352" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify company query" doc:id="701cdb01-c07b-4a1d-ab06-b3fc5be2f813" processor="db:select" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="61ad0b01-3be7-4c3f-a3df-89e47028892b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is not empty collection" doc:id="1ae6ec4e-9762-44a7-8916-dafe9b30f9b0" processor="validation:is-not-empty-collection" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="43775875-9283-4fac-a0b8-5dfa8efa377e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="19ae1bab-5cc5-408a-9584-8847a85acd0c" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="773441e6-d51f-4fcb-b74d-2d3ce11ba3e1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="42a8cacb-9241-4f05-8667-82a7057c63b0" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4b0a0660-c01a-444a-ad35-ee0312b4330d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="d19b063d-203c-48f9-879f-eb19b1d96f9c" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="505665bc-1a27-45f2-9afa-fdfd53fb59ab" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="postCustomer-test" doc:id="1c1da720-8aae-4756-b5e9-096dcb3b9bab" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock add customer" doc:id="dc96fe7e-5787-4f10-a4b0-b583ccb529a1" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5e3190bc-a81c-4c1e-a02e-7160c80db647" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postCustomertest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postCustomertest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="d06d67db-ecab-4222-913b-c41615ade769" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postCustomertest\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postCustomertest\set-event_attributes1.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postCustomertest\set-event_variable_1.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to postCustomer" doc:id="9164a309-fbce-432e-b7d8-5bc0fa9d0568" name="postCustomer"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="5b28cc07-4c88-4115-bd61-a2ef807cc744" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postCustomertest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="490c5153-9dde-41f5-9f9a-bae6dcc3b1a5" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9ee9b485-649e-4dda-a096-f63b53316c13" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="6977b08a-8def-4d41-b577-9241d45cc60e" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5ed7c707-20f9-4a6f-9b10-51bb59efca28" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="deleteCustomer-test" doc:id="99e59cfd-c3ec-432b-8170-3dfa78760ffb" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Delete Customer" doc:id="75f06315-3cbc-4dc6-82fc-18f83eeae60f" processor="db:delete">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e8a78bc1-fcc6-4fa8-b779-6b59c1efd944" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://deleteCustomertest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://deleteCustomertest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="46ca4d5b-73d6-4baa-9aca-11309bb584be" >
+				<munit:payload value="#[readUrl('classpath://deleteCustomertest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://deleteCustomertest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://deleteCustomertest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to deleteCustomer" doc:id="2450ccf7-4b89-480f-a18a-53897065f180" name="deleteCustomer"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e479aa40-eff3-49a7-bf8e-b102ec05f069" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import deleteCustomertest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="d1670f10-6a3d-4c94-aecc-6c46e161343c" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea6158fd-5d72-4468-9de9-029dc8cc4e39" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="3ba57712-b609-462f-b1a6-b1bfe3bed394" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b004a147-8975-43e5-bf53-c3282ad250f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
