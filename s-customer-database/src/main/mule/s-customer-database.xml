@@ -130,6 +130,6 @@ output application/json
         <flow-ref doc:name="postCustomer" doc:id="ea3fa5ba-a84f-4031-abc6-b07750016ec8" name="postCustomer" />
     </flow>
     <flow name="delete:\customers\(ID):s-customer-database-config">
-        <flow-ref doc:name="Flow Reference" doc:id="2ae8a14c-0748-41d9-a228-d8586f106e27" name="deleteCustomer"/>
+        <flow-ref doc:name="Flow Reference" doc:id="2ae8a14c-0748-41d9-a228-d8586f106e27" name="deleteCustomer" />
     </flow>
 </mule>
