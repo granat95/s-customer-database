@@ -17,6 +17,15 @@ WHERE customers.company=:companyQ]]></db:sql>
 					<db:input-parameters ><![CDATA[#['companyQ':attributes.queryParams.company]]]></db:input-parameters>
 				</db:select>
 			</when>
+			<when expression="#[not isEmpty(attributes.queryParams.name)]">
+				<logger level="INFO" doc:name="Logger" doc:id="a5376d1e-046d-46ba-9c8b-62406862c6cd" message="get method -name query"/>
+				<db:select doc:name="name query" doc:id="928ba397-b3dc-4c93-8d88-92bcf54c82c5" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
+FROM customers
+WHERE customers.name=:nameQ]]></db:sql>
+					<db:input-parameters ><![CDATA[#['nameQ':attributes.queryParams.name]]]></db:input-parameters>
+				</db:select>
+			</when>
 			<otherwise >
 				<logger level="INFO" doc:name="Logger" doc:id="f411af68-cef7-41b9-963c-05be295c0469" message="Get method" />
 				<db:select doc:name="all customers" doc:id="0f5ffa8b-bd62-456e-a4f7-cbc9d6fa81fe" config-ref="Database_Config">
