@@ -49,9 +49,9 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="9ee9b485-649e-4dda-a096-f63b53316c13" message="Post method" />
 		<db:insert doc:name="add customer" doc:id="5e3190bc-a81c-4c1e-a02e-7160c80db647" config-ref="Database_Config">
 			<db:sql ><![CDATA[insert into customers (id, name, surname, company)
-values(:clientId, :name, :surname, :company)]]></db:sql>
+values(:idd, :name, :surname, :company)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-        clientId: payload.clientId,
+        idd: payload.id,
         name: payload.name,
         surname: payload.surname,
         company: payload.company
